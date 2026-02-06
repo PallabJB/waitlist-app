@@ -1,65 +1,170 @@
-import Image from "next/image";
+"use client";
+import { useState } from "react";
 
-export default function Home() {
+export default function Page() {
+  const [email, setEmail] = useState("");
+  const [reason, setReason] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [reasonError, setReasonError] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const blockedDomains = [
+    "gmail.com",
+    "yahoo.com",
+    "hotmail.com",
+    "outlook.com",
+    "rediffmail.com",
+    "aol.com",
+    "icloud.com",
+  ];
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    let isValid = true;
+
+    const domain = email.split("@")[1];
+
+    if (!domain || blockedDomains.includes(domain.toLowerCase())) {
+      setEmailError("Business emails only.");
+      isValid = false;
+    } else {
+      setEmailError("");
+    }
+
+    if (reason.trim().length < 20) {
+      setReasonError("Must be at least 20 characters.");
+      isValid = false;
+    } else {
+      setReasonError("");
+    }
+
+    if (isValid) {
+      setLoading(true);
+
+      // Simulate real submission delay (better UX)
+      setTimeout(() => {
+        setLoading(false);
+        setSubmitted(true);
+      }, 900);
+    }
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+    <div className="min-h-screen flex items-center justify-center bg-[#f3f4f6] px-4">
+      <div
+        className={`
+        bg-white/90 backdrop-blur-sm p-8 rounded-2xl shadow-xl 
+        w-full max-w-md transform transition-all duration-500
+        ${submitted ? "scale-95 opacity-90" : "scale-100 opacity-100"}
+      `}
+      >
+        {!submitted ? (
+          <>
+            <div className="text-center mb-6">
+              <h1 className="text-2xl font-bold text-gray-900">
+                Internal Tools Access
+              </h1>
+              <p className="text-sm text-gray-500 mt-2">
+                Enter your business details to request access
+              </p>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div>
+                <input
+                  type="email"
+                  placeholder="Your business email"
+                  className={`
+                    w-full p-3 border rounded-lg transition-all duration-200
+                    focus:ring-2 focus:ring-blue-400 focus:outline-none text-gray-950
+                    ${emailError ? "border-red-400" : "border-gray-300"}
+                  `}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                {emailError && (
+                  <p className="text-red-500 text-sm mt-1 animate-pulse">
+                    {emailError}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <textarea
+                  placeholder="Why do you need access?"
+                  className={`
+                    w-full p-3 border rounded-lg h-28 transition-all duration-200
+                    focus:ring-2 focus:ring-blue-400 focus:outline-none resize-none text-gray-950
+                    ${reasonError ? "border-red-400" : "border-gray-300"}
+                  `}
+                  value={reason}
+                  onChange={(e) => setReason(e.target.value)}
+                ></textarea>
+
+                <div className="flex justify-between items-center mt-1">
+                  <p
+                    className={`text-sm ${
+                      reason.length < 20 ? "text-gray-500" : "text-green-600"
+                    }`}
+                  >
+                    {reason.length} / 20 characters
+                  </p>
+
+                  {reasonError && (
+                    <p className="text-red-500 text-sm animate-pulse">
+                      {reasonError}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className={`
+                  w-full p-3 rounded-lg font-medium text-white
+                  transition-all duration-300 transform hover:-translate-y-0.5
+                  ${
+                    loading
+                      ? "bg-gray-400 cursor-not-allowed"
+                      : "bg-blue-600 hover:bg-blue-700 shadow-md"
+                  }
+                `}
+              >
+                {loading ? "Submitting..." : "Request Access Token"}
+              </button>
+            </form>
+          </>
+        ) : (
+          <div className="text-center space-y-3 animate-fadeIn">
+            <div className="text-green-600 text-3xl">✔</div>
+            <p className="font-medium text-gray-900">
+              You have been added to the queue.
+            </p>
+            <p className="text-sm text-gray-900">
+              We will review your request shortly.
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* Small animation style */}
+      <style jsx global>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(6px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .animate-fadeIn {
+          animation: fadeIn 0.6s ease-out forwards;
+        }
+      `}</style>
     </div>
   );
 }
