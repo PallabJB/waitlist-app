@@ -19,7 +19,7 @@ export default function Page() {
     "icloud.com",
   ];
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     let isValid = true;
 
