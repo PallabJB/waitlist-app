@@ -17,6 +17,13 @@ export default function Page() {
     "rediffmail.com",
     "aol.com",
     "icloud.com",
+    "gmail",
+    "yahoo",
+    "hotmail",
+    "outlook",
+    "rediffmail",
+    "aol",
+    "icloud",
   ];
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
