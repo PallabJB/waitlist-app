@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Waitlist App – Internal Tools Access
 
-## Getting Started
+## 📌 Project Overview
+This project is a simple waitlist page where users can request access to internal tools. The page contains a form with a business email field and a text area where users explain why they need access. The goal was to follow all the given UI and validation constraints using Next.js and Tailwind CSS.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🛠️ Tech Stack
+- Next.js (App Router)
+- Tailwind CSS
+- Hosted on Netlify
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ✅ How I Implemented the Requirements
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 🎨 UI Design
+I used a full-screen grey background with the color #f3f4f6 and placed a white card in the center of the page using flexbox. The card has rounded corners and a slight shadow to make it stand out. Inside the card, I kept the UI simple with a title, one input field, one text area, and a submit button that reads “Request Access Token” exactly as required.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+### 🔐 Email Validation (Business Email Only)
+For email validation, I did not rely only on HTML required attributes. Instead, I manually checked the email in JavaScript before submission. I split the email string at the “@” symbol to extract the domain and compared it with a list of blocked domains like gmail.com, yahoo.com, and outlook.com. If the domain matched any of these, I showed the error message “Business emails only.” and prevented the form from submitting.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### ✍️ Reason Field Validation 
+I stored the text area input in React state and checked its length every time the user typed. If the length was less than 20 characters, I displayed an error message and also showed a live character count below the text box so the user knows how much more they need to write. The form only proceeds when the text is at least 20 characters long.
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### ✅ Success State
+I used a boolean state variable called `submitted` to control what is shown on the screen. When the form passes all validations, I set this state to true, which makes the form disappear and replaces it with the message: “You have been added to the queue.” No backend or database was used for this.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 🚀 Deployment Pipeline
+I created a GitHub repository for this project and pushed all my code to the main branch. Then I connected this repository to Netlify so that every time I commit and push changes to main, the live site automatically rebuilds and updates without any manual deployment.
+
+---
+
+## 🐞 One Problem I Faced & How I Fixed It
+
+**Problem:**  
+When deploying to Netlify, the build failed because of a TypeScript error. It complained that the form submit event parameter had an implicit “any” type, which is not allowed in production builds.
+
+**Solution:**  
+I fixed this by explicitly typing the event parameter as `React.FormEvent<HTMLFormElement>` in my `handleSubmit` function. After adding this type, I committed the change, pushed it to GitHub, and Netlify successfully built and deployed the site.
+
+---
+
+## 🌐 Live Site
+Link: https://waitlist-app-by-pj.netlify.app/
