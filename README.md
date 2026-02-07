@@ -1,7 +1,7 @@
 # Waitlist App – Internal Tools Access
 
 ## 📌 Project Overview
-This project is a simple waitlist page where users can request access to internal tools. The page contains a form with a business email field and a text area where users explain why they need access. The goal was to follow all the given UI and validation constraints using Next.js and Tailwind CSS.
+This project is a basic waitlist page, where users can ask access to internal tools. The page includes a form with a business email field and a text area that users can use to describe why they need access. And the end result should adhere to all the provided UI and validation requirements using Next. js and Tailwind CSS.
 
 ---
 
@@ -15,37 +15,38 @@ This project is a simple waitlist page where users can request access to interna
 ## ✅ How I Implemented the Requirements
 
 ### 🎨 UI Design
-I used a full-screen grey background with the color #f3f4f6 and placed a white card in the center of the page using flexbox. The card has rounded corners and a slight shadow to make it stand out. Inside the card, I kept the UI simple with a title, one input field, one text area, and a submit button that reads “Request Access Token” exactly as required.
+Full Screen White CardFlexbox enabled me to make a white card in the middle of the screen.I used full screen grey background with color #f3f4f6 and put a white card in center using flex box. The card comes with round corners and a mild shadow to help the box pop. On the card’s interior, I'm using an extremely clean UI with a title and a field for input text and another for free-form text (i.e., Textarea); there is then the button that says “Request Access Token” exactly as we are told.
 
 ---
 
 ### 🔐 Email Validation (Business Email Only)
-For email validation, I did not rely only on HTML required attributes. Instead, I manually checked the email in JavaScript before submission. I split the email string at the “@” symbol to extract the domain and compared it with a list of blocked domains like gmail.com, yahoo.com, and outlook.com. If the domain matched any of these, I showed the error message “Business emails only.” and prevented the form from submitting.
+I didn't depended solely on html required attribute for email validation. So rather than moving on I checked the email by hand in JavaScript before submitting it. I broke the email string at the “@” for finding domain and verified against a list of blocked domains e.g gmail. com, yahoo. com, and outlook. com. If the domain matched any of these, I showed the error message “Business emails only.” and prevented the form from submitting.
 
 ---
 
 ### ✍️ Reason Field Validation 
-I stored the text area input in React state and checked its length every time the user typed. If the length was less than 20 characters, I displayed an error message and also showed a live character count below the text box so the user knows how much more they need to write. The form only proceeds when the text is at least 20 characters long.
+I stored the input of the text area in React state and checked its length whenever user typed. Then, if the length of the input text is fewer than 20 characters, I output a message error and display a live count character immediately beneath our text box to tell user how much they need to write. This form does not advance if the text is less than 20 characters.
+
 
 ---
 
 ### ✅ Success State
-I used a boolean state variable called `submitted` to control what is shown on the screen. When the form passes all validations, I set this state to true, which makes the form disappear and replaces it with the message: “You have been added to the queue.” No backend or database was used for this.
+I had a boolean state called submitted that controlled the display. If the form passes all validations, I set this state to true, so the form goes away and instead there a message: “You have been added to the queue”. There is not a backend or database used in this.
 
 ---
 
 ## 🚀 Deployment Pipeline
-I created a GitHub repository for this project and pushed all my code to the main branch. Then I connected this repository to Netlify so that every time I commit and push changes to main, the live site automatically rebuilds and updates without any manual deployment.
+I opened a GitHub repo for this project and pushed all code to the main branch. Then I linked this repository up to Netlify and whenever you commit a push to main, it triggers a live site rebuild and deploys without having to do any deployment hacks.
 
 ---
 
 ## 🐞 One Problem I Faced & How I Fixed It
 
 **Problem:**  
-When deploying to Netlify, the build failed because of a TypeScript error. It complained that the form submit event parameter had an implicit “any” type, which is not allowed in production builds.
+When Netlify deployed, it errored out due to a TypeScript issue. It was complaining that parameter of form submit event is implicit “any” and production build do not allow it.
 
 **Solution:**  
-I fixed this by explicitly typing the event parameter as `React.FormEvent<HTMLFormElement>` in my `handleSubmit` function. After adding this type, I committed the change, pushed it to GitHub, and Netlify successfully built and deployed the site.
+I "solved" it by cast the event parametertype to React. FormEvent in my handleSubmit` function. After including this type I committed the change, pushed to GitHub and Netlify built and deployed the site.without errors.
 
 ---
 
